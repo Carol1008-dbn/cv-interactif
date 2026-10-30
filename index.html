@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CV interactif cinématographique de Carolina Dias Mota, apprentie développeuse de business numérique." />
+  <title>Carolina Dias Mota — Digital Identity</title>
+
+  <!-- Polices : serif éditoriale (titres) + sans-serif moderne (contenu).
+       Fallback local assuré en CSS si la connexion échoue. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css?v=3" />
+</head>
+<body>
+  <!-- Fond immersif doux (dégradés prune / mauve / rose poudré) -->
+  <div class="bg-stage" aria-hidden="true">
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Transition chromatique organique : ruban fluide bordeaux -> vieux rose -> champagne -->
+    <svg class="bg-ribbon-band" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="bandGrad" x1="0" y1="0" x2="1" y2="0.3">
+          <stop offset="0%" stop-color="#4e1f33"/>
+          <stop offset="32%" stop-color="#8a4866"/>
+          <stop offset="62%" stop-color="#d7a9bd"/>
+          <stop offset="100%" stop-color="#f6e7ec" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="bandGold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#e8c79a" stop-opacity="0"/>
+          <stop offset="55%" stop-color="#eecfa6" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#f0d9b6" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="bandBlur"><feGaussianBlur stdDeviation="22"/></filter>
+      </defs>
+      <g filter="url(#bandBlur)">
+        <path class="band-1" d="M-40 120 C 260 40, 320 360, 560 300 S 900 160, 1260 260 L 1260 -40 L -40 -40 Z" fill="url(#bandGrad)" opacity="0.55"/>
+        <path class="band-2" d="M-40 420 C 220 320, 360 620, 620 520 S 980 420, 1260 540 L 1260 820 L -40 820 Z" fill="url(#bandGrad)" opacity="0.4"/>
+        <path class="band-gold" d="M-40 300 C 240 220, 360 440, 640 360 S 1000 300, 1260 380" fill="none" stroke="url(#bandGold)" stroke-width="3" opacity="0.6"/>
+      </g>
+    </svg>
+
+    <canvas id="bg-canvas"></canvas>
+  </div>
+
+  <!-- Dégradés partagés pour les trajectoires « ruban » (signature visuelle) -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#8b6b87" stop-opacity="0"/>
+        <stop offset="35%" stop-color="#dca5bc" stop-opacity="0.7"/>
+        <stop offset="65%" stop-color="#d7589e" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#60354f" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Indicateur de progression du défilement -->
+  <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ============ BARRE SUPÉRIEURE (sommaire) ============ -->
+  <header class="topbar" role="banner">
+    <a href="#accueil" class="brand">
+      <span class="brand-name">Carolina</span>
+      <span class="brand-sub">DIAS MOTA</span>
+    </a>
+
+    <nav id="main-nav" class="nav" aria-label="Sommaire du CV">
+      <!-- liens remplis dynamiquement -->
+    </nav>
+
+    <div class="topbar-actions">
+      <!-- Sélecteur de langue FR / DE / EN -->
+      <div id="lang-switch" class="lang-switch" role="group" aria-label="Choix de la langue">
+        <button type="button" class="lang-opt" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" class="lang-opt" data-lang="de" aria-pressed="false">DE</button>
+        <button type="button" class="lang-opt" data-lang="en" aria-pressed="false">EN</button>
+        <span class="lang-ind" aria-hidden="true"></span>
+      </div>
+
+      <button id="burger" class="burger" type="button" aria-label="Ouvrir le sommaire" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ SOMMAIRE LATÉRAL (desktop) ============ -->
+  <aside id="rail" class="rail" aria-label="Navigation rapide">
+    <!-- rempli dynamiquement -->
+  </aside>
+
+  <!-- ============ PAGE CONTINUE ============ -->
+  <main class="page" role="main">
+
+    <!-- 1. ACCUEIL — COUVERTURE ÉDITORIALE ASYMÉTRIQUE -->
+    <section id="accueil" class="hero" aria-label="Accueil">
+      <!-- Repères éditoriaux (coins de page magazine) -->
+      <span class="hero-corner tl" aria-hidden="true" data-i18n="coverIssue">DIGITAL IDENTITY — N°01</span>
+      <span class="hero-corner tr" aria-hidden="true">MMXXVI</span>
+
+      <!-- Portrait éditorial -->
+      <div class="hero-visual">
+        <span class="hero-visual-tag" aria-hidden="true" data-i18n="portraitTag">PORTRAIT</span>
+        <div class="hero-portrait-wrap">
+          <div id="hero-portrait" class="portrait" role="img" aria-label="Portrait de Carolina Dias Mota">
+            <!-- Photo réelle si fournie, sinon placeholder élégant -->
+          </div>
+          <svg class="hero-trace" viewBox="0 0 400 600" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M40 10 C 200 120, 120 320, 360 300 S 200 540, 380 590" fill="none" stroke="url(#heroGrad)" stroke-width="1.2" />
+            <defs>
+              <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#dca5bc" stop-opacity="0.85"/>
+                <stop offset="55%" stop-color="#d7589e" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#8b6b87" stop-opacity="0.08"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <!-- Citation placée SOUS la photo (lisible) -->
+        <p class="hero-quote" data-i18n="heroQuote">« Les grands projets commencent toujours par une grande curiosité. »</p>
+      </div>
+
+      <!-- Bloc titre éditorial -->
+      <div class="hero-text">
+        <p class="hero-hello"><em data-i18n="hello">Bonjour,</em> <span data-i18n="iam">je suis</span></p>
+        <h1 class="hero-name" aria-label="Carolina Dias Mota">
+          <span class="hero-name-1">Carolina</span>
+          <span class="hero-name-2">Dias&nbsp;Mota</span>
+        </h1>
+        <div class="hero-meta-row">
+          <span class="hero-rule" aria-hidden="true"></span>
+          <p id="hero-role" class="hero-role"></p>
+        </div>
+        <p id="hero-tagline" class="hero-tagline"></p>
+        <a href="#profil" class="hero-cta">
+          <span class="hero-cta-dot" aria-hidden="true"></span>
+          <span data-i18n="explore">EXPLORER MON PROFIL</span>
+          <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <a href="#profil" class="scroll-hint" aria-label="Défiler pour découvrir">
+        <span class="scroll-hint-text" data-i18n="scrollHint">DÉFILER POUR DÉCOUVRIR</span>
+        <span class="scroll-line" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <!-- Les sections suivantes sont injectées par app.js, dans l'ordre -->
+    <div id="sections"></div>
+
+  </main>
+
+  <footer class="site-foot">
+    <span id="foot-name"></span>
+    <span class="foot-note" data-i18n="footNote">« Chaque compétence est une opportunité »</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
